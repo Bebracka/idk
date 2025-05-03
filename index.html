@@ -1,24 +1,100 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <title>Бомба Браузер</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('cat.jpg');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(5px);
+      overflow: hidden;
+    }
+    .bar {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .bar input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .bar button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .bar button:hover {
+      background-color: #555;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 50px);
+      border: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="toolbar">
+  <div class="bar">
     <button onclick="goHome()">Домой</button>
     <button onclick="goBack()">←</button>
     <button onclick="goForward()">→</button>
-    <input type="text" id="urlInput" placeholder="Введите адрес или запрос...">
-    <button onclick="loadURL()">Перейти</button>
-    <button onclick="clearHistory()">🧹</button>
+    <input type="text" id="urlInput" placeholder="Введите URL..." />
+    <button onclick="loadSite()">Перейти</button>
   </div>
-
-  <div class="tabs" id="tabs"></div>
   <iframe id="browserFrame" src="https://example.com"></iframe>
 
-  <script src="script.js"></script>
+  <script>
+    const frame = document.getElementById('browserFrame');
+    const input = document.getElementById('urlInput');
+    let historyStack = [];
+    let currentIndex = -1;
+
+    function loadSite() {
+      let url = input.value.trim();
+      if (!url.startsWith("http")) {
+        url = "https://" + url;
+      }
+      frame.src = url;
+      historyStack = historyStack.slice(0, currentIndex + 1);
+      historyStack.push(url);
+      currentIndex++;
+    }
+
+    function goBack() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        frame.src = historyStack[currentIndex];
+        input.value = historyStack[currentIndex];
+      }
+    }
+
+    function goForward() {
+      if (currentIndex < historyStack.length - 1) {
+        currentIndex++;
+        frame.src = historyStack[currentIndex];
+        input.value = historyStack[currentIndex];
+      }
+    }
+
+    function goHome() {
+      const home = "https://example.com";
+      frame.src = home;
+      input.value = home;
+      historyStack.push(home);
+      currentIndex = historyStack.length - 1;
+    }
+  </script>
 </body>
 </html>
