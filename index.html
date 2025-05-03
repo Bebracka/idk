@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Бомба Браузер</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="browser">
+    <div class="toolbar">
+      <button onclick="goBack()">←</button>
+      <button onclick="goForward()">→</button>
+      <button onclick="reloadPage()">⟳</button>
+      <input type="text" id="urlInput" placeholder="Введите адрес..." value="https://example.com">
+      <button onclick="loadURL()">Перейти</button>
+    </div>
+    <iframe id="browserFrame" src="https://example.com"></iframe>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
