@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Стена Идей — BubonPrivet</title>
+  <title>СТЕНА ИДЕЙ — BubonPrivet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -27,6 +27,7 @@
       justify-content: space-between;
       align-items: center;
       margin: 10px 20px;
+      gap: 15px;
     }
     #addNoteBtn {
       padding: 10px 16px;
@@ -36,12 +37,13 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      margin-right: 15px;
     }
     #searchInput {
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
-      width: 200px;
+      width: 220px;
     }
     #board {
       display: flex;
@@ -60,37 +62,11 @@
       min-height: 80px;
       flex-shrink: 0;
     }
-    .panel {
-      background: #ffffff;
-      padding: 20px;
-      border-top: 1px solid #ddd;
-    }
-    .panel h2 {
-      color: #666;
-    }
-    .tool {
-      margin-bottom: 20px;
-    }
-    .tool button {
-      padding: 8px 16px;
-      background: #cccccc;
-      color: #222;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 5px;
-    }
-    .tool p {
-      background: #f0f0f0;
-      padding: 10px;
-      border-radius: 6px;
-      min-height: 40px;
-    }
   </style>
 </head>
 <body>
 
-<header>СТЕНА ИДЕЙ + ПАНЕЛЬ ГЕНИЯ</header>
+<header>СТЕНА ИДЕЙ</header>
 
 <div id="controls">
   <button id="addNoteBtn" onclick="addNote()">Добавить идею</button>
@@ -99,5 +75,31 @@
 
 <div id="board"></div>
 
+<script>
+  const notes = [];
+
+  function addNote(content = "Новая идея...") {
+    const note = document.createElement("div");
+    note.className = "note";
+    note.contentEditable = true;
+    note.innerText = content;
+    document.getElementById("board").appendChild(note);
+    notes.push(note);
+  }
+
+  function searchNotes() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    notes.forEach(note => {
+      const match = note.innerText.toLowerCase().includes(search);
+      note.style.display = match ? "block" : "none";
+    });
+  }
+
+  window.onload = () => {
+    for (let i = 0; i < 3; i++) addNote();
+  };
+</script>
+
 </body>
 </html>
+
