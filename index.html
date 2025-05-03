@@ -22,21 +22,43 @@
       font-weight: bold;
       border-bottom: 1px solid #ccc;
     }
+    #controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 20px;
+    }
+    #addNoteBtn {
+      padding: 10px 16px;
+      background: #d0d0d0;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #searchInput {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 200px;
+    }
     #board {
       display: flex;
-      flex-wrap: wrap;
+      overflow-x: auto;
       padding: 20px;
-      min-height: 300px;
+      min-height: 200px;
+      gap: 10px;
     }
     .note {
       background: #ffffff;
       padding: 15px;
-      margin: 10px;
       border-radius: 8px;
       box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
       cursor: move;
       width: 200px;
       min-height: 80px;
+      flex-shrink: 0;
     }
     .panel {
       background: #ffffff;
@@ -64,34 +86,16 @@
       border-radius: 6px;
       min-height: 40px;
     }
-    #addNoteBtn {
-      margin: 20px;
-      display: block;
-      padding: 12px 20px;
-      background: #d0d0d0;
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .hidden-link {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      opacity: 0;
-    }
-    #easter1 { top: 10px; left: 10px; }
-    #easter2 { top: 50px; right: 15px; }
-    #easter3 { bottom: 40px; left: 40%; }
-    #easter4 { bottom: 5px; right: 5px; }
   </style>
 </head>
 <body>
 
 <header>СТЕНА ИДЕЙ + ПАНЕЛЬ ГЕНИЯ</header>
 
-<button id="addNoteBtn" onclick="addNote()">Добавить идею</button>
+<div id="controls">
+  <button id="addNoteBtn" onclick="addNote()">Добавить идею</button>
+  <input type="text" id="searchInput" placeholder="Поиск по идеям..." oninput="searchNotes()">
+</div>
 
 <div id="board"></div>
 
@@ -117,18 +121,24 @@
   </div>
 </div>
 
-<a href="book.html" class="hidden-link" id="easter1"></a>
-<a href="bot.html" class="hidden-link" id="easter2"></a>
-<a href="dictator.html" class="hidden-link" id="easter3"></a>
-<a href="mad.html" class="hidden-link" id="easter4"></a>
-
 <script>
+  const notes = [];
+
   function addNote() {
     const note = document.createElement("div");
     note.className = "note";
     note.contentEditable = true;
     note.innerText = "Новая идея...";
     document.getElementById("board").appendChild(note);
+    notes.push(note);
+  }
+
+  function searchNotes() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    notes.forEach(note => {
+      const match = note.innerText.toLowerCase().includes(search);
+      note.style.display = match ? "block" : "none";
+    });
   }
 
   function genTask() {
@@ -136,7 +146,10 @@
       "Придумай задачу на тему 'внимание'",
       "Составь логическую головоломку",
       "Опиши задачу, которую решил недавно",
-      "Создай упражнение для памяти"
+      "Создай упражнение для памяти",
+      "Найди 3 ошибки в тексте за 1 минуту",
+      "Придумай задачу для двух человек",
+      "Сконструируй задачу из жизни"
     ];
     document.getElementById("taskOutput").innerText =
       tasks[Math.floor(Math.random() * tasks.length)];
@@ -147,7 +160,10 @@
       "Смотри в одну точку 30 секунд",
       "Прочитай 3 предложения и перескажи",
       "Заметь 5 новых вещей вокруг",
-      "Послушай тишину 1 минуту"
+      "Послушай тишину 1 минуту",
+      "Опиши 3 предмета с закрытыми глазами",
+      "Следи за дыханием 20 вдохов",
+      "Посчитай шаги за 2 минуты"
     ];
     document.getElementById("focusOutput").innerText =
       focus[Math.floor(Math.random() * focus.length)];
@@ -158,14 +174,17 @@
       "Смысл не в смысле, а в движении к нему.",
       "Мышление — это игра с правилами, которых ты сам не знал.",
       "Каждая идея — это дверь. Открой.",
-      "Твоя сила — в наблюдении. Начни с этого."
+      "Твоя сила — в наблюдении. Начни с этого.",
+      "Пауза — это тоже мысль.",
+      "Молчи, но наблюдай: в этом — сила.",
+      "Никто не мешает тебе думать — кроме тебя самого."
     ];
     document.getElementById("quoteOutput").innerText =
       quotes[Math.floor(Math.random() * quotes.length)];
   }
 
   window.onload = () => {
-    for (let i = 0; i < 2; i++) addNote();
+    for (let i = 0; i < 3; i++) addNote();
   };
 </script>
 
